@@ -4,6 +4,7 @@ import android.app.ActionBar;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.IntegerRes;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -17,13 +18,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
     LinearLayout mlayout;
     EditText mEditText;
     Button mButton;
-    int num=1;
+    int m=0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,10 +67,11 @@ public class MainActivity extends AppCompatActivity {
     }
     private TextView createNewTextView(final String text)
     {
+
         final LinearLayout.LayoutParams lparams=new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT);
         final TextView textView=new TextView(this);
         textView.setLayoutParams(lparams);
-        textView.setText(num+". "+text);
+        textView.setText(text);
         textView.setTextSize(25);
         textView.setTextColor(Color.MAGENTA);
         textView.setOnClickListener(new View.OnClickListener(){
@@ -78,8 +81,21 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(newPage);
             }
         });
-        num=num+1;
         mEditText.setText("");
         return textView;
     }
+
+ public void removeText(View view){
+     if(m==0) {
+         Toast.makeText(this, "Enter position in textbox and click button again", Toast.LENGTH_LONG).show();
+         m = 1;
+     } else if (m == 1 ) {
+         int pos = Integer.parseInt(mEditText.getText().toString());
+         if (mlayout.getChildAt(pos + 1) instanceof TextView)
+             mlayout.removeView(mlayout.getChildAt(pos + 1));
+         else
+             Toast.makeText(this, "No item in specified position", Toast.LENGTH_LONG).show();
+         m = 0;
+     }
+ }
 }
